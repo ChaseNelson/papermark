@@ -15,6 +15,8 @@ import {
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { mutate } from "swr";
+import { usePlan } from "@/lib/swr/use-billing";
+
 
 import BarChart from "@/components/shared/icons/bar-chart";
 import Check from "@/components/shared/icons/check";
@@ -28,6 +30,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UpgradePlanModal } from "@/components/billing/upgrade-plan-modal";
+
 
 import { DocumentWithLinksAndLinkCountAndViewCount } from "@/lib/types";
 import { cn, nFormatter, timeAgo } from "@/lib/utils";
@@ -55,12 +59,14 @@ export default function DocumentsCard({
   const { theme, systemTheme } = useTheme();
   const isLight =
     theme === "light" || (theme === "system" && systemTheme === "light");
+  const { plan: userPlan, trial: userTrial } = usePlan();
 
   const { isCopied, copyToClipboard } = useCopyToClipboard({});
   const [isFirstClick, setIsFirstClick] = useState<boolean>(false);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [moveFolderOpen, setMoveFolderOpen] = useState<boolean>(false);
   const [addDataroomOpen, setAddDataroomOpen] = useState<boolean>(false);
+  const [showUpgradePlanModal, setShowUpgradePlanModal] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   /** current folder name */
@@ -108,6 +114,20 @@ export default function DocumentsCard({
       setIsFirstClick(true);
     }
   };
+
+  const handleAddToDataroom = () => {
+    console.log(userPlan);
+    console.log(userTrial);
+    if (
+      userPlan !== "business" &&
+      userPlan !== "datarooms" &&
+      userTrial !== "drtrial"
+    ) {
+      setShowUpgradePlanModal(true);
+      return;
+    }
+    setAddDataroomOpen(true);
+  }
 
   const handleDeleteDocument = async (documentId: string) => {
     // Prevent the first click from deleting the document
@@ -283,7 +303,7 @@ export default function DocumentsCard({
                 <Layers2Icon className="mr-2 h-4 w-4" />
                 Duplicate document
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setAddDataroomOpen(true)}>
+              <DropdownMenuItem onClick={handleAddToDataroom}>
                 <BetweenHorizontalStartIcon className="mr-2 h-4 w-4" />
                 Add to dataroom
               </DropdownMenuItem>
@@ -321,6 +341,16 @@ export default function DocumentsCard({
           documentName={prismaDocument.name}
         />
       ) : null}
+
+      {showUpgradePlanModal ? (
+        <UpgradePlanModal
+          clickedPlan="Business"
+          trigger="add_to_dataroom"
+          open={showUpgradePlanModal}
+          setOpen={setShowUpgradePlanModal}
+
+        />
+      ): null }
     </>
   );
 }
