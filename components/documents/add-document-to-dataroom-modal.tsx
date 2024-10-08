@@ -24,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { PlusIcon } from "lucide-react";
+import { AddDataroomModal } from "@/components/datarooms/add-dataroom-modal";
 
 export type TSelectedDataroom = { id: string; name: string } | null;
 
@@ -112,6 +114,15 @@ export function AddToDataroomModal({
           <div className="mb-2"></div>
 
           <DialogFooter>
+            <AddDataroomModal>
+              <Button
+                className="flex h-9 w-full gap-1"
+                loading={loading}
+                >
+                <PlusIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                <span>Create Dataroom</span>
+              </Button>
+            </AddDataroomModal>
             <Button
               onClick={handleSubmit}
               className="flex h-9 w-full gap-1"
