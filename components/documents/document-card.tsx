@@ -15,9 +15,8 @@ import {
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { mutate } from "swr";
-import { usePlan } from "@/lib/swr/use-billing";
 
-
+import { UpgradePlanModal } from "@/components/billing/upgrade-plan-modal";
 import BarChart from "@/components/shared/icons/bar-chart";
 import Check from "@/components/shared/icons/check";
 import Copy from "@/components/shared/icons/copy";
@@ -30,9 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UpgradePlanModal } from "@/components/billing/upgrade-plan-modal";
 
-
+import { usePlan } from "@/lib/swr/use-billing";
 import { DocumentWithLinksAndLinkCountAndViewCount } from "@/lib/types";
 import { cn, nFormatter, timeAgo } from "@/lib/utils";
 import { fileIcon } from "@/lib/utils/get-file-icon";
@@ -66,7 +64,8 @@ export default function DocumentsCard({
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [moveFolderOpen, setMoveFolderOpen] = useState<boolean>(false);
   const [addDataroomOpen, setAddDataroomOpen] = useState<boolean>(false);
-  const [showUpgradePlanModal, setShowUpgradePlanModal] = useState<boolean>(false);
+  const [showUpgradePlanModal, setShowUpgradePlanModal] =
+    useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   /** current folder name */
@@ -127,7 +126,7 @@ export default function DocumentsCard({
       return;
     }
     setAddDataroomOpen(true);
-  }
+  };
 
   const handleDeleteDocument = async (documentId: string) => {
     // Prevent the first click from deleting the document
@@ -348,9 +347,8 @@ export default function DocumentsCard({
           trigger="add_to_dataroom"
           open={showUpgradePlanModal}
           setOpen={setShowUpgradePlanModal}
-
         />
-      ): null }
+      ) : null}
     </>
   );
 }

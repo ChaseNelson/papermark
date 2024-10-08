@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { useTeam } from "@/context/team-context";
+import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import { AddDataroomModal } from "@/components/datarooms/add-dataroom-modal";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,8 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { PlusIcon } from "lucide-react";
-import { AddDataroomModal } from "@/components/datarooms/add-dataroom-modal";
 
 export type TSelectedDataroom = { id: string; name: string } | null;
 
@@ -115,10 +115,7 @@ export function AddToDataroomModal({
 
           <DialogFooter>
             <AddDataroomModal>
-              <Button
-                className="flex h-9 w-full gap-1"
-                loading={loading}
-                >
+              <Button className="flex h-9 w-full gap-1" loading={loading}>
                 <PlusIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
                 <span>Create Dataroom</span>
               </Button>
